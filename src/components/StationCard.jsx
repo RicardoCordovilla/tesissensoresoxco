@@ -54,7 +54,7 @@ const StationCard = ({ info }) => {
             <span
                 className='stationTitle'
                 onClick={() => itemInfo && navigate('/' + info?.title)}
-            >{info?.title}</span>
+            >{info?.alias}</span>
 
             <div className="sensorInfoContainer">
                 <span className='infoLabel'>CO:</span>

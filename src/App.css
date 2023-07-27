@@ -162,11 +162,12 @@ body {
 
 .dateContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1rem;
-  padding: 1rem;
+  padding: 2rem;
   color: #858585;
   font-size: 1rem;
+  
 }
 
 .dateField {
@@ -183,15 +184,39 @@ body {
   padding: 0.2rem 0.4rem;
 }
 
+.chartTitle {
+  color: #ffff;
+  width: 100%;
+  /* background-color: #1d508a; */
+  text-align: center;
+  padding: 1rem;
+  
+}
+
 .chartsContainer {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin-bottom: 2rem;
 }
 
 
 .chartContainer {
+  position: relative;
   background-color: var(--chartbackcolor);
   border: 1px solid #343434;
   padding: 0.5rem 1rem;
+  border-radius: 8px;
+  box-shadow: 5px 5px 8px 1px #706d6dc4 ;
+}
+
+.y_axisLabel{
+  position: absolute;
+  top:50%;
+  left: 0.5rem;
+  transform: rotate(-90deg);
+}
+.x_axisLabel{
+  text-align: center;
+  margin-top: -0.8rem;
 }

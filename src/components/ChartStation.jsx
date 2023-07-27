@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { config } from '../config'
-import { io } from "socket.io-client";
 import { CSVLink } from "react-csv";
 import { ExportToExcel } from './ExportToExcel'
 import { BiHome } from 'react-icons/bi';
@@ -43,6 +42,7 @@ const ChartStation = () => {
     }
 
 
+    const [stationInfo, setStationInfo] = useState()
     const [registers, setRegisters] = useState()
     const [allRegisters, setAllRegisters] = useState([])
     const [csv, setCsv] = useState([])
@@ -52,6 +52,21 @@ const ChartStation = () => {
     const [fetching, setFetching] = useState(false)
     const [from, setFrom] = useState(formatDate(new Date()))
     const [to, setTo] = useState(formatDate(new Date()))
+
+
+
+
+    const getStation = () => {
+        let url = config.db.baseurl + 'stations/' + station
+        console.log(url)
+        axios.get(url)
+            .then(response => {
+                console.log(response.data)
+                setStationInfo(response.data[0])
+                console.log(stationInfo)
+            })
+            .catch(err => console.log(err))
+    }
 
 
     const getRegistersRange = (from, toDate) => {
@@ -96,6 +111,10 @@ const ChartStation = () => {
 
 
     useEffect(() => {
+        getStation()
+    }, [])
+
+    useEffect(() => {
 
 
         const interval = setInterval(() => {
@@ -105,6 +124,7 @@ const ChartStation = () => {
 
 
     }, [])
+
 
     useEffect(() => {
         console.log(update)
@@ -145,6 +165,9 @@ const ChartStation = () => {
                 onClick={() => getRegistersRange(from, to)}
                 disabled={download && fetching}
             >Actualizar</button> */}
+
+                <h1 className='chartTitle'>{stationInfo?.alias}</h1>
+
 
                 {!allRegisters.length > 0 &&
                     <button
@@ -192,12 +215,14 @@ const ChartStation = () => {
                 </div>
             </div>
 
-            <h1>{station}</h1>
+            {/* <h1 className='chartTitle'>{stationInfo?.alias}</h1> */}
 
             <div className="chartsContainer">
 
                 <div className="chartContainer">
                     <h3>Datos Co2</h3>
+                    <span className='y_axisLabel'>ppm</span>
+
                     <LineChart width={800} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }} >
                         <Line type="monotone" dataKey="co"
                             stroke={config.styles.linecolor}
@@ -212,10 +237,13 @@ const ChartStation = () => {
                             contentStyle={options}
                         />
                     </LineChart>
+
+                    <div className='x_axisLabel'>tiempo</div>
                 </div>
 
                 <div className="chartContainer">
                     <h3>Datos Oxígeno</h3>
+                    <span className='y_axisLabel'>ppm</span>
                     <LineChart width={800} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                         <Line type="monotone" dataKey="ox"
                             stroke={config.styles.linecolor}
@@ -230,6 +258,8 @@ const ChartStation = () => {
                             contentStyle={options}
                         />
                     </LineChart>
+                    <div className='x_axisLabel'>tiempo</div>
+
                 </div>
 
             </div>
