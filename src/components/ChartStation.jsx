@@ -62,7 +62,7 @@ const ChartStation = () => {
         axios.get(url)
             .then(response => {
                 console.log(response.data)
-                setStationInfo(response.data[0])
+                setStationInfo(response.data)
                 console.log(stationInfo)
             })
             .catch(err => console.log(err))
