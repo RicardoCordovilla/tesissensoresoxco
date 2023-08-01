@@ -119,7 +119,7 @@ const ChartStation = () => {
 
         const interval = setInterval(() => {
             setUpdate(update => update + 1)
-        }, 1000);
+        }, 5000);
         return () => clearInterval(interval);
 
 
